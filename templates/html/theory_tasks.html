@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Теоретические задания</title>
+		<link rel="stylesheet" href="/css/style.css">
+	</head>
+	<body>
+
+		{% include 'html/top_bar.html' %}
+
+
+
+		<div class="table">
+			{% for key in task.keys() %}
+				<details>
+					<summary>Направление: {{ key }} </summary>
+					{% for level in task[key].keys() %}
+					<details>
+						<summary>Уровень: {{ level }} </summary>
+						{% for material in task[key][level] %}
+							<p>
+								<a href="/task/{{material[0]}}">{{material[1]}}</a>
+								<a href="/delete_task/{{material[0]}}">Удалить</a>
+							</p>
+						{% endfor %}
+						<details>
+							<summary>Добавить задачу</summary>
+							<form action="/add_task/{{key}}/{{level}}" method="get">
+        						Имя: <br>
+								<input type="text" name="name" value="">
+								<br>
+								<br>
+    							<input style="width: 40%; height: 50px" type="submit" name = "submit" value="Добавить" class="submit">
+							</form>
+						</details>
+					</details>
+					{% endfor %}
+				</details>
+			{% endfor %}
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Задача</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+{% include 'html/top_bar.html' %}
+
+
+<h2> {{task[1]}} </h2>
+<div class="table">
+  {% for material in task[2] %}
+    <div>
+      <a href="/delete_material/{{task[0]}}/{{material[0]}}">Удалить</a>
+      <h1>{{material[1]}}: </h1>
+      <p>{{material[2]}}</p>
+    </div>
+  {% endfor %}
+</div>
+
+<h2> Добавление материала</h2>
+
+<form action="/add_material/{{task[0]}}" enctype="multipart/form-data" method="post">
+    Тип:
+    <select name="type">
+        <option selected="selected" value="Текст">Текст</option>
+        <option value="Изображение">Изображение</option>
+        <option value="Презентация">Презентация</option>
+    </select>
+    <br>
+    <br>
+    File: <label for="file-upload" class="submit">Загрузить</label>
+    <input type="file" name="file" id="file-upload" multiple class="file">
+    <br>
+    <br>
+    <input style="width: 40%; height: 50px" type="submit" name = "submit" value="Добавить" class="submit">
+</form>
+
+</body>
+</html>

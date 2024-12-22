@@ -15,8 +15,31 @@
   {% for material in task[2] %}
     <div>
       <a href="/delete_material/{{task[0]}}/{{material[0]}}">Удалить</a>
-      <h1>{{material[1]}}: </h1>
-      <p>{{material[2]}}</p>
+<!--      <h1>{{material[1]}}: </h1>-->
+        {% if material[1] == "Музыка" %}
+            <br>
+            <audio controls src="../{{material[2]}}"></audio>
+        {% elif material[1] == "Изображение" %}
+            <br>
+            <img src="../{{material[2]}}"></img>
+        {% elif material[1] == "Teкст" %}
+            <br>
+            <p>{{material[2]}}</p>
+        {% elif material[1] == "Презентация" %}
+            <br>
+            <br>
+            <a download href="../{{material[2]}}">Скачать презентацию</a>
+            <br>
+            <br>
+        {% elif material[1] == "Видео" %}
+            <br>
+            <video width="320" height="240" controls >
+                <source src="../{{material[2]}}" type="video/{{material[2].split('.')[-1]}}">
+            </video>
+        {% else %}
+          <h1>{{material[1]}}: </h1>
+          <p>{{material[2]}}</p>
+        {% endif %}
     </div>
   {% endfor %}
 </div>
@@ -28,6 +51,8 @@
     <select name="type">
         <option selected="selected" value="Текст">Текст</option>
         <option value="Изображение">Изображение</option>
+        <option value="Музыка">Музыка</option>
+        <option value="Видео">Видео</option>
         <option value="Презентация">Презентация</option>
     </select>
     <br>

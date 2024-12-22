@@ -51,7 +51,7 @@ class Datebase:
             data[2] = json.loads(data[2])
             for i in range(len(data[2])):
                 cursor.execute(f"select * from education_material where Educational_Material={data[2][i]}")
-                data[2][i] = cursor.fetchone()
+                data[2][i] = list(cursor.fetchone())
 
             return data
         except Exception:

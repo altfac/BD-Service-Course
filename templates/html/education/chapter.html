@@ -10,11 +10,11 @@
 {% include 'html/top_bar.html' %}
 
 
-<h2> {{task[1]}} </h2>
+<h2> {{chapter[1]}} </h2>
 <div class="table">
-  {% for material in task[2] %}
+  {% for material in chapter[2] %}
     <div>
-      <a href="/delete_material/{{task[0]}}/{{material[0]}}">Удалить</a>
+      <a href="/delete_material/{{chapter[0]}}/{{material[0]}}">Удалить</a>
 <!--      <h1>{{material[1]}}: </h1>-->
         {% if material[1] == "Музыка" %}
             <br>
@@ -43,7 +43,7 @@
 
 <h2> Добавление материала</h2>
 
-<form action="/add_material/{{task[0]}}" enctype="multipart/form-data" method="post">
+<form action="/add_material/{{chapter[0]}}" enctype="multipart/form-data" method="post">
     Тип:
     <select name="type">
         <option selected="selected" value="Текст">Текст</option>

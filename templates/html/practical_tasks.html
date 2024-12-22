@@ -11,11 +11,32 @@
 
 		<div class="table">
 			{% for key in task.keys() %}
-				{% if key == "Id" %}
-					<p><a href="/task/{{task[key]}}">{{key}}: {{task[key]}}</a></p>
-				{% else %}
-					<p>{{key}}: {{task[key]}}</p>
-				{% endif %}
+				<details>
+					<summary>Направление: {{ key }} </summary>
+					{% for level in task[key].keys() %}
+					<details>
+						<summary>Уровень: {{ level }} </summary>
+						{% for material in task[key][level] %}
+							<p>
+								<a href="/practical_task/{{material[0]}}">{{material[1]}}</a>
+								<a href="/delete_practical_task/{{material[0]}}">Удалить</a>
+							</p>
+						{% endfor %}
+						<details>
+							<summary>Добавить задачу</summary>
+							<form action="/add_practical_task/{{key}}/{{level}}" method="get">
+        						Имя: <br>
+								<input type="text" name="name" value="">
+								<input type="text" name="description" value="">
+								<input type="text" name="answer" value="">
+								<br>
+								<br>
+    							<input style="width: 40%; height: 50px" type="submit" name = "submit" value="Добавить" class="submit">
+							</form>
+						</details>
+					</details>
+					{% endfor %}
+				</details>
 			{% endfor %}
 		</div>
 

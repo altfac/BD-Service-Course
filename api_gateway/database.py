@@ -57,20 +57,20 @@ class Datebase:
         except Exception:
             return None
 
-    def delete_education_material(self, task_id, material_id):
+    def delete_education_material(self, chapter_id, material_id):
         try:
             self.connection.reconnect()
             cursor = self.connection.cursor()
-            cursor.execute(f"Select * from chapter where Chapter_ID={task_id}")
+            cursor.execute(f"Select * from chapter where Chapter_ID={chapter_id}")
             data = json.loads(cursor.fetchone()[2])
             data.remove(material_id)
             data = json.dumps(data)
-            cursor.execute(f"UPDATE chapter set Content='{data}' where Chapter_ID={task_id}")
+            cursor.execute(f"UPDATE chapter set Content='{data}' where Chapter_ID={chapter_id}")
             self.connection.commit()
         except Exception:
             pass
 
-    def delete_task(self, id):
+    def delete_chapter(self, id):
         try:
             self.connection.reconnect()
             cursor = self.connection.cursor()
@@ -95,7 +95,7 @@ class Datebase:
         except Exception:
             pass
 
-    def add_task(self, course, level, name):
+    def add_chapter(self, course, level, name):
         try:
             self.connection.reconnect()
             cursor = self.connection.cursor()
@@ -109,3 +109,46 @@ class Datebase:
             self.connection.commit()
         except Exception:
             pass
+
+    def add_course(self, name):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"INSERT INTO course (Title) VALUES ('{name}')")
+            self.connection.commit()
+        except Exception:
+            pass
+
+    def get_all_practical_materials(self):
+        self.connection.reconnect()
+        cursor = self.connection.cursor()
+        courses, difficulty_levels = {}, {}
+        data = {}
+
+        cursor.execute("Select * from difficulty_level")
+        ret = cursor.fetchall()
+        for i in ret:
+            difficulty_levels[i[0]] = i[1]
+
+        cursor.execute("Select * from course")
+        ret = cursor.fetchall()
+        for i in ret:
+            data[i[1]] = {}
+            courses[i[0]] = i[1]
+            for level in difficulty_levels.keys():
+                data[i[1]][difficulty_levels[level]] = []
+
+        cursor.execute("Select * from chapter")
+        ret = cursor.fetchall()
+        for i in ret:
+            # task = list(i[1:])
+            course = courses[i[3]]
+            level = difficulty_levels[i[4]]
+            data[course][level].append([i[0], i[1]])
+            # tasks[i[0]][2] = courses[i[3]]
+            # tasks[i[0]][3] = difficulty_levels[i[4]]
+            # for ind in range(len(i[2])):
+            #     self.cursor.execute(f"select * from education_material where Educational_Material={i[2][ind]}")
+            #     tasks[i[0]][1][ind] = self.cursor.fetchall()[0][1:]
+
+        return data

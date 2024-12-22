@@ -19,12 +19,12 @@
         {% if material[1] == "Музыка" %}
             <br>
             <audio controls src="../{{material[2]}}"></audio>
-        {% elif material[1] == "Изображение" %}
-            <br>
-            <img src="../{{material[2]}}"></img>
-        {% elif material[1] == "Teкст" %}
+        {% elif material[1] == "Текст" %}
             <br>
             <p>{{material[2]}}</p>
+        {% elif material[1] == "Изображение" %}
+            <br>
+            <img src="../{{material[2]}}">
         {% elif material[1] == "Видео" %}
             <br>
             <video width="320" height="240" controls >
@@ -33,7 +33,7 @@
         {% else %}
             <br>
             <br>
-            <a download href="../{{material[2]}}">Скачать презентацию</a>
+            <a download href="../{{material[2]}}">Скачать файл</a>
             <br>
             <br>
         {% endif %}

@@ -25,20 +25,17 @@
         {% elif material[1] == "Teкст" %}
             <br>
             <p>{{material[2]}}</p>
-        {% elif material[1] == "Презентация" %}
-            <br>
-            <br>
-            <a download href="../{{material[2]}}">Скачать презентацию</a>
-            <br>
-            <br>
         {% elif material[1] == "Видео" %}
             <br>
             <video width="320" height="240" controls >
                 <source src="../{{material[2]}}" type="video/{{material[2].split('.')[-1]}}">
             </video>
         {% else %}
-          <h1>{{material[1]}}: </h1>
-          <p>{{material[2]}}</p>
+            <br>
+            <br>
+            <a download href="../{{material[2]}}">Скачать презентацию</a>
+            <br>
+            <br>
         {% endif %}
     </div>
   {% endfor %}

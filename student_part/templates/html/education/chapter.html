@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Задача</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+{% include 'html/login_container.html' %}
+{% include 'html/top_bar.html' %}
+
+
+<h2> {{chapter[1]}} </h2>
+<div class="table">
+  {% for material in chapter[2] %}
+    <div>
+        {% if material[1] == "Музыка" %}
+            <br>
+            <audio controls src="../{{material[2]}}"></audio>
+        {% elif material[1] == "Текст" %}
+            <br>
+            <p>{{material[2]}}</p>
+        {% elif material[1] == "Изображение" %}
+            <br>
+            <img src="../{{material[2]}}">
+        {% elif material[1] == "Видео" %}
+            <br>
+            <video width="320" height="240" controls >
+                <source src="../{{material[2]}}" type="video/{{material[2].split('.')[-1]}}">
+            </video>
+        {% else %}
+            <br>
+            <br>
+            <a download href="../{{material[2]}}">Скачать файл</a>
+            <br>
+            <br>
+        {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
+</body>
+</html>

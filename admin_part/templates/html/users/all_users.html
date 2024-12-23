@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Пользователи</title>
+		<link rel="stylesheet" href="/css/style.css">
+	</head>
+	<body>
+
+		{% include 'html/login_container.html' %}
+		{% include 'html/top_bar.html' %}
+
+		<div class="table">
+			<details>
+				<summary>Студенты</summary>
+				<details>
+					<summary>Добавить студента</summary>
+					<form action="/add_student" method="post">
+						Имя: <br>
+						<input type="text" name="name" value="" required>
+						<br>
+						Почта: <br>
+						<input type="text" name="email" value="" required>
+						<br>
+						Пароль: <br>
+						<input type="password" name="password" value="" required>
+						<br>
+						<br>
+						<input style="width: 40%; height: 50px" type="submit" name = "submit" value="Отправить" class="submit">
+					</form>
+				</details>
+				{% for student in users["students"] %}
+					<a href="/edit_student/{{student[0]}}">{{student[1]}}</a>
+				    <a href="/delete_student/{{student[0]}}">Удалить</a>
+					<br>
+				{% endfor %}
+			</details>
+			<details>
+				<summary>Администраторы</summary>
+				<details>
+					<summary>Добавить администратора</summary>
+					<form action="/add_admin" method="post">
+						Имя: <br>
+						<input type="text" name="name" value="" required>
+						<br>
+						Почта: <br>
+						<input type="text" name="email" value="" required>
+						<br>
+						Пароль: <br>
+						<input type="password" name="password" value="" required>
+						<br>
+						Роль: <br>
+						<input type="number" name="role" value="0" min="0" max="2" required>
+						<br>
+						<br>
+						<input style="width: 40%; height: 50px" type="submit" name = "submit" value="Отправить" class="submit">
+					</form>
+				</details>
+				{% for admin in users["admins"] %}
+					<a href="/edit_admin/{{admin[0]}}">{{admin[1]}}</a>
+					<br>
+				{% endfor %}
+			</details>
+		</div>
+
+	</body>
+</html>

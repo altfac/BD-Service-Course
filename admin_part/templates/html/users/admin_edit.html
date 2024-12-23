@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    {% include 'html/login_container.html' %}
+    {% include 'html/top_bar.html' %}
+
+    <form action="/update_admin/{{admin[0]}}" method="get">
+        Имя: <br>
+        <input type="text" name="name" value="{{admin[1]}}" required>
+        <br>
+        Почта: <br>
+        <input type="text" name="email" value="{{admin[2]}}" required>
+        <br>
+        Роль: <br>
+        <input type="number" name="role" value="{{admin[4]}}" min="0" max="2" required>
+        <br>
+        <br>
+        <input style="width: 40%; height: 50px" type="submit" name = "submit" value="Отправить" class="submit">
+    </form>
+
+</body>
+</html>

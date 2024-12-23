@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Задача</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+{% include 'html/login_container.html' %}
+{% include 'html/top_bar.html' %}
+
+<h2> {{task[1]}} </h2>
+<h2> Описание: </h2>
+<h2> {{task[4]}} </h2>
+<h2> Награда за выполнение: </h2>
+<h2> {{task[3]}} </h2>
+<form action="/add_attempt/{{task[0]}}" method="get">
+    Ответ: <br>
+    <input type="text" name="answer" value="" required>
+    <br>
+    <br>
+    <input style="width: 40%; height: 50px" type="submit" name = "submit" value="Отправить" class="submit">
+</form>
+<table class="submissions table">
+  <caption>
+	Попытки
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Твой ответ</th>
+      <th scope="col">Вердикт</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for attempt in attempts %}
+    <tr>
+      <td>{{attempt[1]}}</td>
+      <td style="color: {% if attempt[2] == 'Принято' %}
+					green {% else %} red {% endif %}">{{attempt[2]}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</body>
+</html>

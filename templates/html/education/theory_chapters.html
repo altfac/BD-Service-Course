@@ -7,6 +7,7 @@
 	</head>
 	<body>
 
+		{% include 'html/login_container.html' %}
 		{% include 'html/top_bar.html' %}
 
 		<div class="table">
@@ -38,12 +39,13 @@
 							<summary>Добавить теоретическую задачу</summary>
 							<form action="/add_chapter/{{key}}/{{level}}" method="get">
         						Имя: <br>
-								<input type="text" name="name" value="">
+								<input type="text" name="name" value="" required>
 								<br>
 								<br>
     							<input style="width: 40%; height: 50px" type="submit" name = "submit" value="Добавить" class="submit">
 							</form>
 						</details>
+						<br>
 					</details>
 					{% endfor %}
 				</details>

@@ -1,6 +1,7 @@
 import mysql.connector, json
 
-class Datebase:
+
+class Database:
     def __init__(self, connection):
         self.connection = connection
 
@@ -26,15 +27,9 @@ class Datebase:
         cursor.execute("Select * from chapter")
         ret = cursor.fetchall()
         for i in ret:
-            # task = list(i[1:])
             course = courses[i[3]]
             level = difficulty_levels[i[4]]
             data[course][level].append([i[0], i[1]])
-            # tasks[i[0]][2] = courses[i[3]]
-            # tasks[i[0]][3] = difficulty_levels[i[4]]
-            # for ind in range(len(i[2])):
-            #     self.cursor.execute(f"select * from education_material where Educational_Material={i[2][ind]}")
-            #     tasks[i[0]][1][ind] = self.cursor.fetchall()[0][1:]
 
         return data
 
@@ -44,10 +39,6 @@ class Datebase:
             cursor = self.connection.cursor()
             cursor.execute(f"Select * from chapter where Chapter_ID={id}")
             data = list(cursor.fetchone())[:3]
-            # self.cursor.execute(f"Select Degree from difficulty_level where Difficulty_Level_ID={data[4]}")
-            # data[4] = self.cursor.fetchone()[0]
-            # self.cursor.execute(f"Select Title from course where Course_ID={data[3]}")
-            # data[4] = self.cursor.fetchone()[0]
             data[2] = json.loads(data[2])
             for i in range(len(data[2])):
                 cursor.execute(f"select * from education_material where Educational_Material={data[2][i]}")
@@ -95,7 +86,7 @@ class Datebase:
         except Exception:
             pass
 
-    def add_chapter(self, course, level, name):
+    def add_chapter(self, course, level, name, admin_id):
         try:
             self.connection.reconnect()
             cursor = self.connection.cursor()
@@ -105,7 +96,7 @@ class Datebase:
             level_id = cursor.fetchall()[0][0]
             cursor.execute(f"INSERT INTO chapter (Title, Content, CourseCourse_ID, "
                            f"Difficulty_LevelDifficulty_Level_ID, admin_Admin_ID) "
-                           f"VALUES ('{name}', '[]', {course_id}, {level_id}, 1)")
+                           f"VALUES ('{name}', '[]', {course_id}, {level_id}, {admin_id})")
             self.connection.commit()
         except Exception:
             pass
@@ -119,7 +110,7 @@ class Datebase:
         except Exception:
             pass
 
-    def get_all_practical_materials(self):
+    def get_all_practical_tasks(self):
         self.connection.reconnect()
         cursor = self.connection.cursor()
         courses, difficulty_levels = {}, {}
@@ -138,17 +129,72 @@ class Datebase:
             for level in difficulty_levels.keys():
                 data[i[1]][difficulty_levels[level]] = []
 
-        cursor.execute("Select * from chapter")
+        cursor.execute("Select * from task")
         ret = cursor.fetchall()
         for i in ret:
-            # task = list(i[1:])
-            course = courses[i[3]]
-            level = difficulty_levels[i[4]]
+            course = courses[i[6]]
+            level = difficulty_levels[i[7]]
             data[course][level].append([i[0], i[1]])
-            # tasks[i[0]][2] = courses[i[3]]
-            # tasks[i[0]][3] = difficulty_levels[i[4]]
-            # for ind in range(len(i[2])):
-            #     self.cursor.execute(f"select * from education_material where Educational_Material={i[2][ind]}")
-            #     tasks[i[0]][1][ind] = self.cursor.fetchall()[0][1:]
 
         return data
+
+    def get_practical_task(self, id):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"SELECT * FROM task WHERE (Task_ID)=({id})")
+            return cursor.fetchone()
+        except Exception:
+            return False
+
+    def update_practical_task(self, id, name, description, reward, answer):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"UPDATE task set Name='{name}', Description='{description}', Reward={reward}, "
+                           f"Answer='{answer}' where Task_ID={id}")
+            self.connection.commit()
+            return True
+        except Exception:
+            return False
+
+    def delete_practical_task(self, id):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"DELETE FROM attempt WHERE TaskTask_ID={id}")
+            cursor.execute(f"DELETE FROM task WHERE Task_ID={id}")
+            self.connection.commit()
+            return True
+        except Exception:
+            return False
+
+    def add_practical_task(self, course, level, name, description, reward, answer, admin_id):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"SELECT Course_ID FROM course WHERE Title = '{course}'")
+            course_id = cursor.fetchall()[0][0]
+            cursor.execute(f"SELECT Difficulty_Level_ID FROM difficulty_level WHERE Degree = '{level}'")
+            level_id = cursor.fetchall()[0][0]
+            cursor.execute(f"INSERT INTO task (Name, Answer, Reward, "
+                           f"Description, admin_Admin_ID, difficulty_level_Difficulty_Level_ID, course_Course_ID) "
+                           f"VALUES ('{name}', '{answer}', {reward}, '{description}', {admin_id}, {level_id}, {course_id})")
+            self.connection.commit()
+        except Exception:
+            pass
+
+    def check_admin(self, email, password):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"SELECT * FROM admin WHERE (Email, password)=('{email}', '{password}')")
+            res = cursor.fetchall()
+            if len(res):
+                return res[0]
+        except Exception:
+            return False
+
+
+connection = mysql.connector.connect(host="localhost", user="root", password="root", database="curseusers")
+my_database = Database(connection)

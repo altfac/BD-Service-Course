@@ -7,9 +7,22 @@
 	</head>
 	<body>
 
+		{% include 'html/login_container.html' %}
 		{% include 'html/top_bar.html' %}
 
 		<div class="table">
+			<br>
+			<details>
+				<summary>Добавить направление</summary>
+				<form action="/add_course/" method="get">
+					Имя: <br>
+					<input type="text" name="name" value="">
+					<br>
+					<br>
+					<input style="width: 40%; height: 50px" type="submit" name = "submit" value="Добавить" class="submit">
+				</form>
+			</details>
+			<br>
 			{% for key in task.keys() %}
 				<details>
 					<summary>Направление: {{ key }} </summary>
@@ -26,14 +39,22 @@
 							<summary>Добавить задачу</summary>
 							<form action="/add_practical_task/{{key}}/{{level}}" method="get">
         						Имя: <br>
-								<input type="text" name="name" value="">
-								<input type="text" name="description" value="">
-								<input type="text" name="answer" value="">
+								<input type="text" name="name" value="" required>
+								<br>
+        						Описание: <br>
+								<input type="text" name="description" value="" required>
+								<br>
+        						Награда за выполнение: <br>
+								<input type="number" name="reward" value="1" min="0" max="1000" required>
+								<br>
+        						Ответ: <br>
+								<input type="text" name="answer" value="" required>
 								<br>
 								<br>
     							<input style="width: 40%; height: 50px" type="submit" name = "submit" value="Добавить" class="submit">
 							</form>
 						</details>
+						<br>
 					</details>
 					{% endfor %}
 				</details>

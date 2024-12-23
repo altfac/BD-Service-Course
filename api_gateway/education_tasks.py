@@ -1,10 +1,5 @@
-from fastapi import APIRouter, FastAPI, Request, Response, Form, Cookie, UploadFile
-from database import my_database
+from fastapi import UploadFile
 from auth import *
-from starlette.responses import RedirectResponse
-from starlette.staticfiles import StaticFiles
-from starlette.templating import Jinja2Templates
-
 
 education_router = APIRouter()
 templates = Jinja2Templates(directory="../templates")

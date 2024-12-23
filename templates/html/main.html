@@ -10,19 +10,20 @@
 		{% include 'html/login_container.html' %}
 		{% include 'html/top_bar.html' %}
 
-<!--		{% for task in tasks %}-->
-<!--			<div class="table">-->
-<!--				{% for key in task.keys() %}-->
-<!--					&lt;!&ndash;{% if key == "Id" %}-->
-<!--					<p><a href="/task/{{task[key]}}">{{key}}: {{task[key]}}</a></p>-->
-<!--					{% else %}-->
-<!--					<p>{{key}}: {{task[key]}}</p>-->
-<!--					{% endif %}&ndash;&gt;-->
-<!--					<p>{{key}}: {{task[key]}}</p>-->
-
-<!--				{% endfor %}-->
-<!--			</div>-->
-<!--		{% endfor %}-->
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<p>Имя:</p>
+		<p>{{user[1]}}</p>
+		<p>Почта:</p>
+		<p>{{user[2]}}</p>
+		<p>Роль:</p>
+		<p>{{["Состовитель", "Модератор", "Администратор"][user[4]]}}</p>
 
 	</body>
 </html>

@@ -36,6 +36,17 @@ def get_admin_id(request: Request):
         return False
 
 
+def get_admin_permission(request: Request):
+    try:
+        token = request.cookies.get('token')
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        if not my_database.check_admin(payload["email"], payload["password"]):
+            raise Exception
+        return payload["permission"]
+    except Exception:
+        return False
+
+
 def login(request: Request, failed=False):
     params = {"request": request, "current": "Login", "failed": failed}
     return templates.TemplateResponse("html/login.html", params, media_type="text/html")
@@ -49,7 +60,7 @@ async def to_login(request: Request, email: str = Form(None), password: str = Fo
     if not answer:
         return login(request, failed=True)
 
-    to_encode = {"email": email, "password": password, "id": answer[0]}
+    to_encode = {"email": email, "password": password, "id": answer[0], "permission": answer[4]}
     expire = datetime.datetime.now() + datetime.timedelta(days=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)

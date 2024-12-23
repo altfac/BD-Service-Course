@@ -195,6 +195,87 @@ class Database:
         except Exception:
             return False
 
+    def get_all_users(self):
+        try:
+            users = {"admins": [], "students": []}
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"SELECT * FROM admin")
+            users["admins"] = cursor.fetchall()
+            cursor.execute(f"SELECT * FROM student")
+            users["students"] = cursor.fetchall()
+
+            return users
+        except Exception:
+            return None
+
+    def delete_student(self, id):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"DELETE FROM attempt WHERE StudentStudent_ID={id}")
+            cursor.execute(f"DELETE FROM student_progress WHERE StudentStudent_ID={id}")
+            cursor.execute(f"DELETE FROM student WHERE Student_ID={id}")
+            self.connection.commit()
+        except Exception:
+            return None
+
+    def get_student(self, id):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"SELECT * FROM student WHERE Student_ID={id}")
+            return cursor.fetchone()
+        except Exception:
+            return None
+
+    def update_student(self, id, name, email):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"UPDATE student set Full_Name='{name}', Email='{email}' where Student_ID={id}")
+            self.connection.commit()
+        except Exception:
+            return None
+
+    def add_student(self, name, email, password):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"INSERT INTO student (Full_Name, Email, Password) VALUES "
+                           f"('{name}', '{email}', '{password}')")
+            self.connection.commit()
+        except Exception:
+            return None
+
+    def add_admin(self, name, email, password, role):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"INSERT INTO admin (Full_Name, Email, Password, Role) VALUES ('{name}', '{email}', "
+                           f"'{password}', {role})")
+            self.connection.commit()
+        except Exception:
+            return None
+
+    def get_admin(self, id):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"SELECT * FROM admin WHERE Admin_ID={id}")
+            return cursor.fetchone()
+        except Exception:
+            return None
+
+    def update_admin(self, id, name, email, role):
+        try:
+            self.connection.reconnect()
+            cursor = self.connection.cursor()
+            cursor.execute(f"UPDATE admin set Full_Name='{name}', Email='{email}', Role={role} where Admin_ID={id}")
+            self.connection.commit()
+        except Exception:
+            return None
+
 
 connection = mysql.connector.connect(host="localhost", user="root", password="root", database="curseusers")
 my_database = Database(connection)

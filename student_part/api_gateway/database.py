@@ -70,8 +70,8 @@ class Database:
         cursor.execute("Select * from task")
         ret = cursor.fetchall()
         for i in ret:
-            course = courses[i[6]]
-            level = difficulty_levels[i[7]]
+            course = courses[i[7]]
+            level = difficulty_levels[i[6]]
             data[course][level].append([i[0], i[1]])
 
         return data

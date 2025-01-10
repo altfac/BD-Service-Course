@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Логин</title>
+    <title>Топ умничек</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -10,26 +10,28 @@
     {% include 'html/login_container.html' %}
     {% include 'html/top_bar.html' %}
 
-    <table class="top table">
-      <caption>
-        Top of users
-      </caption>
-      <thead>
-        <tr>
-          <th scope="col">N</th>
-          <th scope="col">Name</th>
-          <th scope="col">Rating</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for user in users %}
-        <tr>
-          <th scope="row">{{loop.index}}</th>
-          <td><p>{{user[1]}}</p></td>
-          <td>{{user[0]}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="container">
+        <table class="table">
+            <caption>
+                Топ умничек
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">N</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Рейтинг</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <th scope="row">{{loop.index}}</th>
+                    <td><p>{{user[1]}}</p></td>
+                    <td>{{user[0]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
